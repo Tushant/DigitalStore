@@ -4,5 +4,8 @@ db.*
 node_modules/
 build/
 .DS_Store
+*.pyc
+__pycache__
+static_collected/
 
 
