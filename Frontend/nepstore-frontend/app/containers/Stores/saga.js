@@ -3,18 +3,20 @@ import { LOAD_STORES } from './constants';
 import { storesLoaded, storesLoadingFailure } from './actions';
 
 import request from 'utils/request';
+import { DigitalStore } from 'containers/App/saga';
 
 export function* loadStores() {
   // Select username from store
-  const requestURL = `192.168.31.198:8000/api/v1/store`;
-
-  try {
-    // Call our request helper (see 'utils/request')
-    const stores = yield call(request, requestURL);
-    yield put(storesLoaded(response));
-  } catch (err) {
-    yield put(storesLoadingFailure(err));
-  }
+  yield call(DigitalStore.get(`store`, storesLoaded, storesLoadingFailure));
+  // const requestURL = `http://tushant.pythonanywhere.com/api/v1/store`;
+  //
+  // try {
+  //   // Call our request helper (see 'utils/request')
+  //   const stores = yield call(request, requestURL);
+  //   yield put(storesLoaded(response));
+  // } catch (err) {
+  //   yield put(storesLoadingFailure(err));
+  // }
 }
 
 /**

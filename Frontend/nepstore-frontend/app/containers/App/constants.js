@@ -9,7 +9,11 @@
  * export const YOUR_ACTION_CONSTANT = 'yourproject/YourContainer/YOUR_ACTION_CONSTANT';
  */
 
-export const LOAD_REPOS = 'boilerplate/App/LOAD_REPOS';
-export const LOAD_REPOS_SUCCESS = 'boilerplate/App/LOAD_REPOS_SUCCESS';
-export const LOAD_REPOS_ERROR = 'boilerplate/App/LOAD_REPOS_ERROR';
+export const LOAD_REPOS = 'DigitalStore/App/LOAD_REPOS';
+export const LOAD_REPOS_SUCCESS = 'DigitalStore/App/LOAD_REPOS_SUCCESS';
+export const LOAD_REPOS_ERROR = 'DigitalStore/App/LOAD_REPOS_ERROR';
+export const INITIALIZE = 'DigitalStore/App/INITIALIZE';
+export const INITIALIZE_SUCCESS = 'DigitalStore/App/INITIALIZE_SUCCESS';
+export const INITIALIZE_ERROR = 'DigitalStore/App/INITIALIZE_ERROR';
 export const DEFAULT_LOCALE = 'en';
+export const API_BASE = 'http://tushant.pythonanywhere.com/api/v1/';

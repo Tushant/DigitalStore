@@ -11,6 +11,9 @@ const selectRoute = state => state.route;
 const makeSelectCurrentUser = () =>
   createSelector(selectGlobal, globalState => globalState.currentUser);
 
+const makeSelectInitialize = () =>
+  createSelector(selectGlobal, globalState => globalState.initialized);
+
 const makeSelectLoading = () => createSelector(selectGlobal, globalState => globalState.loading);
 
 const makeSelectError = () => createSelector(selectGlobal, globalState => globalState.error);
@@ -26,5 +29,6 @@ export {
   makeSelectLoading,
   makeSelectError,
   makeSelectRepos,
-  makeSelectLocation
+  makeSelectLocation,
+  makeSelectInitialize
 };

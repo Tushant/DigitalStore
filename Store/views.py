@@ -4,33 +4,66 @@ from django.views.generic.edit import FormView
 from django.shortcuts import render
 
 #rest_framework specific
-from rest_framework import generics
+from rest_framework.response import Response
+from rest_framework import generics, status
+from rest_framework.views import APIView
 from .serializers import StoreSerializer, ProductSerializer
 
 from .forms import StoreForm
 from .models import Store, Product
+from nepstore import error
 
-class StoreListView(generics.ListCreateAPIView):
-    queryset = Store.objects.all()
-    serializer_class=StoreSerializer
+class StoreListView(APIView):
+    def get(self, request, format=None):
+        """
+        Return a list of all stores.
+        """
+        reply = {}
+        try:
+            stores = Store.objects.all()
+            reply['data'] = StoreSerializer(stores, many=True).data
+        except:
+            reply['data'] = []
+        return Response(reply, status.HTTP_200_OK)
 
-    def get_queryset(self):
-        queryset = Store.objects.all()
-        # Set up eager loading to avoid N+1 selects
-        queryset = self.get_serializer_class().setup_eager_loading(queryset)
-        return queryset
+class StoreDetailView(APIView):
+    serializer_class = StoreSerializer
+    def get(self, request, token=None, format=None):
+        if token is None:
+            return error.BadRequest().as_response()
+        reply = {}
+        try:
+            store = Store.objects.get(token=token)
+            reply['data'] = self.serializer_class(store).data
+            return Response(reply, status.HTTP_200_OK)
+        except Store.DoesNotExist:
+            return error.RequestedResourceNotFound().as_response()
+        except:
+            return error.UnknownError().as_response()
 
-class StoreDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Store.objects.all()
-    serializer_class=StoreSerializer
-    lookup_url_kwarg = 'token'
-    lookup_field = 'token'
 
-    def get_queryset(self):
-        queryset = Store.objects.all()
-        # Set up eager loading to avoid N+1 selects
-        queryset = self.get_serializer_class().setup_eager_loading(queryset)
-        return queryset
+
+# class StoreListView(generics.ListCreateAPIView):
+#     queryset = Store.objects.all()
+#     serializer_class=StoreSerializer
+#
+#     def get_queryset(self):
+#         queryset = Store.objects.all()
+#         # Set up eager loading to avoid N+1 selects
+#         queryset = self.get_serializer_class().setup_eager_loading(queryset)
+#         return queryset
+
+# class StoreDetailView(generics.RetrieveUpdateDestroyAPIView):
+#     queryset = Store.objects.all()
+#     serializer_class=StoreSerializer
+#     lookup_url_kwarg = 'token'
+#     lookup_field = 'token'
+#
+#     def get_queryset(self):
+#         queryset = Store.objects.all()
+#         # Set up eager loading to avoid N+1 selects
+#         queryset = self.get_serializer_class().setup_eager_loading(queryset)
+#         return queryset
 
 class ProductListView(generics.ListCreateAPIView):
     queryset = Product.objects.all()

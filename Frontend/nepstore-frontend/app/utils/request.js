@@ -1,5 +1,14 @@
 import 'whatwg-fetch';
 
+export function requestJSON(url, options) {
+  if (options === undefined) {
+    options = {}; // eslint-disable-line no-param-reassign
+  }
+  // To send the cookies for same domain
+  options.credentials = 'same-origin'; // eslint-disable-line no-param-reassign
+  return fetch(url, options).then(checkStatus).then(parseJSON);
+}
+
 /**
  * Parses the JSON returned by a network request
  *
@@ -41,6 +50,11 @@ function checkStatus(response) {
  * @return {object}           The response data
  */
 export default function request(url, options) {
+  if (options === undefined) {
+    options = {}; // eslint-disable-line no-param-reassign
+  }
+  // To send the cookies for same domain
+  options.credentials = 'omit'; // eslint-disable-line no-param-reassign
   console.log('url', url, options);
   return fetch(url, options).then(checkStatus).then(parseJSON);
 }

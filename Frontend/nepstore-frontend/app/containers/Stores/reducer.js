@@ -12,8 +12,10 @@ function storeReducer(state = initialState, action) {
     case LOAD_STORES:
       return { ...state, loading: true, success: false, error: false };
     case LOAD_STORES_SUCCESS:
+      console.log('action', action);
       return { ...state, loading: false, success: true, error: false, stores: action.response };
     case LOAD_STORES_FAILURE:
+      console.log('failure action', action);
       return { ...state, loading: false, success: false, error: action.error };
     default:
       return state;
