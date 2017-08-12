@@ -1,0 +1,32 @@
+.header-row {
+	background: url('../img/online-shopping.jpg') no-repeat center center / cover;
+	height: 600px;
+}
+
+.ui.nav-menu .item:before {
+	background: transparent !important;
+}
+
+.ui.segment {
+	position: relative;
+	background: #fff;
+	margin: 1rem 0;
+	padding: 0 !important;
+	border-radius: .28571429rem;
+}
+
+.basic.button.nav-post-btn {
+	background: #58c9b9 !important;
+	color: #fff !important;
+	border: 0;
+	border-radius: 0;
+	margin: 10px 0;
+}
+
+.ui.top.attached.demo.menu.nav-menu {
+	border: 0 !important;
+}
+
+.products {
+	margin: 30px 0;
+}

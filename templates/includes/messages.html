@@ -1,0 +1,15 @@
+{% if messages %}
+  <div class="message">
+  {% if messages|length == 1 %}
+    {% for message in messages %}
+      {{ message }}
+    {% endfor %}
+  {% else %}
+    <ul>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+  </div>
+{% endif %}

@@ -1,0 +1,8 @@
+.pyc
+.sqlite3
+db.*
+node_modules/
+build/
+.DS_Store
+
+
