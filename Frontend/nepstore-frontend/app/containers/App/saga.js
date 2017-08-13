@@ -1,4 +1,5 @@
 import React from 'react';
+import Cookies from 'cookies-js';
 import { request, requestJSON } from 'utils/request';
 import { takeLatest, take, call, put, fork, cancel, select } from 'redux-saga/effects';
 import { LOCATION_CHANGE, push } from 'react-router-redux';
@@ -16,37 +17,29 @@ export class DigitalStore {
   /**
    * Generic api data loader
    */
-  static dataLoader(apiUri, onSuccess, onError, data, metaData, ...actionArguments) {
+  static dataLoader(apiUri, onSuccess, onError, data, ...actionArguments) {
     return function*() {
       // eslint-disable-line func-names
       const requestURL = `${API_BASE}${apiUri}`;
       try {
+        // Call our request helper (see 'utils/request')
         let options;
         if (data !== undefined) {
+          // If we have data to post
           options = {
-            method: data._id || metaData === 'put' ? 'PUT' : 'POST',
-            mode: 'no-cors',
+            method: 'POST',
             body: JSON.stringify(data),
             headers: {
               'Content-Type': 'application/json',
-              'X-Requested-With': 'XMLHttpRequest',
-              'Access-Control-Allow-Origin': '*'
-            }
-          };
-        } else {
-          options = {
-            method: 'GET',
-            mode: 'no-cors',
-            headers: {
-              'Content-Type': 'application/json',
-              'X-Requested-With': 'XMLHttpRequest',
-              'Access-Control-Allow-Origin': '*'
+              'X-CSRFToken': Cookies.get('csrftoken'),
+              'X-Requested-With': 'XMLHttpRequest'
             }
           };
         }
         const response = yield call(requestJSON, requestURL, options);
-        yield put(onSuccess(response, data, metaData, ...actionArguments));
+        yield put(onSuccess(response, ...actionArguments));
       } catch (e) {
+        // console.log(e);
         let error = null;
         try {
           error = yield call(() => e.response.json());

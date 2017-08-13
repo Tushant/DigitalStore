@@ -6,6 +6,7 @@ build/
 .DS_Store
 *.pyc
 __pycache__
+*/__pycache__
 static_collected/
 
 

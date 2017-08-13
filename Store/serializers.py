@@ -37,6 +37,7 @@ class StoreSerializer(serializers.ModelSerializer, EagerLoadingMixin):
     _SELECT_RELATED_FIELDS = ['merchant', ]
     # product = ProductSerializer(many=True)
     opening_hour = OpeningHoursSerializer(many=True)
+    id = serializers.CharField(source='token', read_only=True)
     class Meta:
         model = Store
         exclude = ('is_active', )
