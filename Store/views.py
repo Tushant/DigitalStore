@@ -13,18 +13,44 @@ from .forms import StoreForm
 from .models import Store, Product
 from nepstore import error
 
-class StoreListView(APIView):
-    def get(self, request, format=None):
+class StoreView(APIView):
+    serializer_class = StoreSerializer
+    def get(self, request, token=None, format=None):
         """
         Return a list of all stores.
         """
         reply = {}
         try:
             stores = Store.objects.all()
-            reply['data'] = StoreSerializer(stores, many=True).data
+            if token:
+                store = stores.get(token=token)
+                reply['data'] = self.serializer_class(store).data
+            reply['data'] = self.serializer_class(stores, many=True).data
         except:
             reply['data'] = []
         return Response(reply, status.HTTP_200_OK)
+
+    def post(self, request, format=None):
+        """
+        Post store
+        """
+        store = None
+        reply={}
+        if not token is None:
+            try:
+                store = Store.objects.get(token=token)
+            except Store.DoesNotExist:
+                return error.RequestedResourceNotFound().as_response()
+            except:
+                return error.UnknownError().as_response()
+        serialized_data = self.serializer_class(instance=store, data=request.data, partial=True)
+        if serialized_data.is_valid():
+            serialized_data.save(merchant=request.user)
+        else:
+            return error.ValidationError(serialized_data.errors).as_response()
+        return self.get(request)
+
+
 
 class StoreDetailView(APIView):
     serializer_class = StoreSerializer
